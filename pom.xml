@@ -104,7 +104,7 @@
         <configuration>
           <!-- Uncomment to enable incremental compilation -->
           <!-- <useIncrementalCompilation>false</useIncrementalCompilation> -->
-
+          <fork>true</fork>
           <annotationProcessorPaths combine.self="override">
             <path>
               <groupId>org.projectlombok</groupId>
@@ -138,6 +138,7 @@
             </path>
           </annotationProcessorPaths>
           <compilerArgs>
+            <arg>-J-Dmicronaut.openapi.views.spec=rapidoc.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop</arg>
             <arg>-Amicronaut.processing.group=com.hassialis.philip</arg>
             <arg>-Amicronaut.processing.module=mn-stock-broker-2</arg>
           </compilerArgs>
