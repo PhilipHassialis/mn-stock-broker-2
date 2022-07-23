@@ -1,9 +1,9 @@
 package com.hassialis.philip.broker.wallet;
 
-import com.hassialis.philip.broker.Symbol;
-
 import java.math.BigDecimal;
 import java.util.UUID;
+
+import com.hassialis.philip.broker.model.Symbol;
 
 public record DepositFiatMoney(
                 UUID accountId,

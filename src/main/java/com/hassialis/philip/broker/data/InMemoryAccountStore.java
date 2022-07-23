@@ -1,6 +1,6 @@
 package com.hassialis.philip.broker.data;
 
-import com.hassialis.philip.broker.Symbol;
+import com.hassialis.philip.broker.model.Symbol;
 import com.hassialis.philip.broker.wallet.DepositFiatMoney;
 import com.hassialis.philip.broker.wallet.Wallet;
 import com.hassialis.philip.broker.wallet.WithdrawFiatMoney;

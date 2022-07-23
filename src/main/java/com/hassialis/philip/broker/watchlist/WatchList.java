@@ -3,7 +3,7 @@ package com.hassialis.philip.broker.watchlist;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hassialis.philip.broker.Symbol;
+import com.hassialis.philip.broker.model.Symbol;
 
 public record WatchList(List<Symbol> symbols) {
 

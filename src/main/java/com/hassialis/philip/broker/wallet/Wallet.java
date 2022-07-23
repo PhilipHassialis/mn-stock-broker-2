@@ -1,7 +1,7 @@
 package com.hassialis.philip.broker.wallet;
 
-import com.hassialis.philip.broker.Symbol;
 import com.hassialis.philip.broker.api.RestApiResponse;
+import com.hassialis.philip.broker.model.Symbol;
 
 import java.math.BigDecimal;
 import java.util.UUID;

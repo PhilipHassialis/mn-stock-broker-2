@@ -7,12 +7,11 @@ import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.hassialis.philip.broker.Symbol;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
 
 import com.github.javafaker.*;
+import com.hassialis.philip.broker.model.Symbol;
 
 @Singleton
 public class InMemoryStore {
