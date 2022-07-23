@@ -1,7 +1,9 @@
 package com.hassialis.philip.broker.data;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
@@ -38,5 +40,9 @@ public class InMemoryStore {
 
   public Map<String, Symbol> getSymbols() {
     return symbols;
+  }
+
+  public List<Symbol> getAllSymbols() {
+    return symbols.values().stream().collect(Collectors.toList());
   }
 }
