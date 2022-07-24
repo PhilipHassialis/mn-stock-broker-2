@@ -4,10 +4,12 @@ import java.util.UUID;
 
 import com.hassialis.philip.broker.data.InMemoryAccountStore;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 
+@Secured(SecurityRule.IS_AUTHENTICATED)
 @Controller("/account/watchlist")
 public record WatchListController(InMemoryAccountStore store) {
 

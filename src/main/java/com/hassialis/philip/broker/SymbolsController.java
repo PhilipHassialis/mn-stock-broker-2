@@ -11,7 +11,10 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 
+@Secured(SecurityRule.IS_ANONYMOUS)
 @Controller("/symbols")
 public class SymbolsController {
 
