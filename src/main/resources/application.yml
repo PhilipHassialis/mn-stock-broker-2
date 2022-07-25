@@ -1,4 +1,11 @@
 micronaut:
+  # this config added to help debug
+  http:
+    client:
+      timeout: 10m
+  server:
+    idle-timeout: 10m
+  # end of debug timeout configs
   application:
     name: mnStockBroker2
   security:
