@@ -22,7 +22,8 @@ public record WatchListController(InMemoryAccountStore store) {
 
   @Put(consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
   public WatchList update(@Body WatchList watchList) {
-    return store.updateWatchList(ACCOUNT_ID, watchList);
+    var myresponse = store.updateWatchList(ACCOUNT_ID, watchList);
+    return myresponse;
   }
 
   @Delete(produces = MediaType.APPLICATION_JSON)

@@ -109,7 +109,10 @@ class WatchListControllerTest {
   @Test
   void canUpdateWatchListForTestAccount() {
     var symbols = Stream.of("AAPL", "MSFT", "GOOG").map(Symbol::new).toList();
-    var request = HttpRequest.PUT("/account/watchlist", new WatchList(symbols)).accept(MediaType.APPLICATION_JSON);
+
+    final BearerAccessRefreshToken token = givenUserIsLoggedIn();
+    var request = HttpRequest.PUT("/account/watchlist", new WatchList(symbols)).accept(MediaType.APPLICATION_JSON)
+        .bearerAuth(token.getAccessToken());
     var response = client.toBlocking().exchange(request);
     assertEquals(HttpStatus.OK, response.getStatus());
     assertEquals(symbols,

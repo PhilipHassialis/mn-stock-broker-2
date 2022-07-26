@@ -9,6 +9,7 @@ import jakarta.inject.Singleton;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Singleton
 public class InMemoryAccountStore {
@@ -17,12 +18,17 @@ public class InMemoryAccountStore {
   private final Map<UUID, Map<UUID, Wallet>> walletsPerAccount = new HashMap<>();
 
   public WatchList getWatchList(final UUID accountId) {
+    // var symbols = Stream.of("AAPL", "MSFT", "GOOG").map(Symbol::new).toList();
+    // WatchList watchList = new WatchList(symbols);
+    // watchListsPerAccount.put(accountId, watchList);
+
     return watchListsPerAccount.getOrDefault(accountId, new WatchList());
   }
 
   public WatchList updateWatchList(final UUID accountId, final WatchList watchList) {
     watchListsPerAccount.put(accountId, watchList);
-    return getWatchList(accountId);
+    var newWatchlist = getWatchList(accountId);
+    return newWatchlist;
   }
 
   public void deleteWatchList(final UUID accountId) {
