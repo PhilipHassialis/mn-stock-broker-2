@@ -1,33 +1,35 @@
 package com.hassialis.philip.broker.watchlist;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.Duration;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import io.micronaut.http.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.hassialis.philip.auth.jwt.AuthenticationProviderUserPassword;
 import com.hassialis.philip.broker.data.InMemoryAccountStore;
 import com.hassialis.philip.broker.model.Symbol;
 
-import io.micronaut.http.client.DefaultHttpClientConfiguration;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.client.HttpClient;
-import io.micronaut.http.client.HttpClientConfiguration;
 import io.micronaut.http.client.annotation.Client;
-import io.micronaut.http.client.netty.DefaultHttpClient;
+import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @MicronautTest
 class WatchListControllerTest {
@@ -50,6 +52,17 @@ class WatchListControllerTest {
   private void givenWatchListForAccountExists() {
     inMemoryAccountStore.updateWatchList(TEST_ACCOUNT_ID, new WatchList(
         Stream.of("AAPL", "MSFT", "GOOG").map(Symbol::new).toList()));
+  }
+
+  @Test
+  void unauthorizedAccessIsForbidden() {
+    try {
+      client.toBlocking().exchange(HttpRequest.GET("/account/watchlist"), JsonNode.class);
+      fail("Should fail if no exception is thrown");
+
+    } catch (HttpClientResponseException e) {
+      assertEquals(HttpStatus.UNAUTHORIZED, e.getStatus());
+    }
   }
 
   @Test
@@ -98,9 +111,9 @@ class WatchListControllerTest {
     var symbols = Stream.of("AAPL", "MSFT", "GOOG").map(Symbol::new).toList();
     var request = HttpRequest.PUT("/account/watchlist", new WatchList(symbols)).accept(MediaType.APPLICATION_JSON);
     var response = client.toBlocking().exchange(request);
-    // assertEquals(HttpStatus.OK, response.getStatus());
-    // assertEquals(symbols,
-    // inMemoryAccountStore.getWatchList(TEST_ACCOUNT_ID).symbols());
+    assertEquals(HttpStatus.OK, response.getStatus());
+    assertEquals(symbols,
+        inMemoryAccountStore.getWatchList(TEST_ACCOUNT_ID).symbols());
 
   }
 
