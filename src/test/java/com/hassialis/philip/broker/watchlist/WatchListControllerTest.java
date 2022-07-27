@@ -29,6 +29,7 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import io.reactivex.rxjava3.core.Single;
 import jakarta.inject.Inject;
 
 @MicronautTest
@@ -40,6 +41,10 @@ class WatchListControllerTest {
   @Inject
   @Client("/")
   HttpClient client;
+
+  @Inject
+  @Client("/")
+  JWTWatchListClient jwtWatchListClient;
 
   @Inject
   InMemoryAccountStore inMemoryAccountStore;
@@ -63,6 +68,18 @@ class WatchListControllerTest {
     } catch (HttpClientResponseException e) {
       assertEquals(HttpStatus.UNAUTHORIZED, e.getStatus());
     }
+  }
+
+  @Test
+  void returnsEmptyWatchListForTestAccountWithCustomClient() {
+
+    var login = jwtWatchListClient.login(new UsernamePasswordCredentials(AuthenticationProviderUserPassword.USERNAME,
+        AuthenticationProviderUserPassword.PASSWORD));
+    var result = jwtWatchListClient.retrieveWatchList(login.getAccessToken()).singleOrEmpty();
+    assertNotNull(result);
+    assertTrue(inMemoryAccountStore.getWatchList(TEST_ACCOUNT_ID).symbols().isEmpty());
+
+    LOG.debug("returnsEmptyWatchListForTestAccountWithCustomClient {}", result);
   }
 
   @Test
@@ -104,6 +121,23 @@ class WatchListControllerTest {
     assertEquals(HttpStatus.OK, response.getStatus());
     assertEquals("{\"symbols\":[{\"value\":\"AAPL\"},{\"value\":\"MSFT\"},{\"value\":\"GOOG\"}]}",
         response.getBody().get().toString());
+  }
+
+  @Test
+  void returnsWatchListForTestAccountWithCustomClient() {
+    givenWatchListForAccountExists();
+    LOG.debug("Get watchlist with custom client");
+    var login = jwtWatchListClient.login(new UsernamePasswordCredentials(AuthenticationProviderUserPassword.USERNAME,
+        AuthenticationProviderUserPassword.PASSWORD));
+    var result = jwtWatchListClient.retrieveWatchList("Bearer " + login.getAccessToken()).singleOrEmpty();
+    var resp = result.block();
+    assertNotNull(resp);
+    assertEquals("[{value=AAPL}, {value=MSFT}, {value=GOOG}]",
+        resp.getBody().get().symbols().toString());
+    // result.subscribe(response -> {
+    // LOG.debug("Inside subscribe {}", response);
+    // assertEquals(HttpStatus.OK, response.getStatus());
+    // });
   }
 
   @Test
