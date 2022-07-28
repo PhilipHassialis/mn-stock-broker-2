@@ -22,3 +22,14 @@ hello:
     translation:
       gr: "Καλημέρα κόσμε"
       en: "Hello world"
+flyway:
+  datasources:
+    default:
+      enabled: true
+      clean-schema: false
+      url: ${PG_JDBC_URL:`jdbc:postgresql://127.0.0.1:5432/mn-stock-brocker`}
+      user: ${PG_USERNAME:postgres}
+      password: ${PG_PASSWORD:secret} #secret
+      schemas: mn
+      default-schema: mn
+
