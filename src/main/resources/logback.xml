@@ -9,6 +9,9 @@
         </encoder>
     </appender>
     <logger name="com.hassialis.philip" level="DEBUG" />
+    <logger name="io.micronaut.flyway" level="INFO" />
+    <logger name="org.flywaydb.core" level="INFO" />
+
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
