@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hassialis.philip.broker.model.Symbol;
-import com.hassialis.philip.broker.persistence.jpa.SymbolEntity;
 import com.hassialis.philip.broker.persistence.jpa.SymbolsRepository;
+import com.hassialis.philip.broker.persistence.model.SymbolEntity;
 import com.hassialis.philip.broker.data.InMemoryStore;
 
 import io.micronaut.core.async.annotation.SingleResult;

@@ -1,4 +1,4 @@
-package com.hassialis.philip.broker.persistence.jpa;
+package com.hassialis.philip.broker.persistence.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
