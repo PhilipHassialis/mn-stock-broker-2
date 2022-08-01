@@ -3,6 +3,7 @@ package com.hassialis.philip.broker.persistence.jpa;
 import java.util.List;
 import java.util.Optional;
 
+import com.hassialis.philip.broker.persistence.model.QuoteDTO;
 import com.hassialis.philip.broker.persistence.model.QuoteEntity;
 import com.hassialis.philip.broker.persistence.model.SymbolEntity;
 
@@ -17,7 +18,7 @@ public interface QuotesRepository extends CrudRepository<QuoteEntity, Integer> {
 
   Optional<QuoteEntity> findBySymbol(SymbolEntity symbol);
 
-  List<QuoteEntity> listOrderByVolumeDesc();
+  List<QuoteDTO> listOrderByVolumeDesc();
 
-  List<QuoteEntity> listOrderByVolumeAsc();
+  List<QuoteDTO> listOrderByVolumeAsc();
 }

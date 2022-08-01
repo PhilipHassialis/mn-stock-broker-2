@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.hassialis.philip.broker.error.CustomError;
 import com.hassialis.philip.broker.model.Quote;
 import com.hassialis.philip.broker.persistence.jpa.QuotesRepository;
+import com.hassialis.philip.broker.persistence.model.QuoteDTO;
 import com.hassialis.philip.broker.persistence.model.QuoteEntity;
 import com.hassialis.philip.broker.persistence.model.SymbolEntity;
 import com.hassialis.philip.broker.data.InMemoryStore;
@@ -80,7 +81,7 @@ public class QuotesController {
   @ApiResponse(content = @Content(mediaType = MediaType.APPLICATION_JSON))
   @Tag(name = "quotes")
   @Get("/jpa/ordered/desc")
-  public List<QuoteEntity> orderedDesc() {
+  public List<QuoteDTO> orderedDesc() {
     return quotesRepository.listOrderByVolumeDesc();
   }
 
@@ -88,7 +89,7 @@ public class QuotesController {
   @ApiResponse(content = @Content(mediaType = MediaType.APPLICATION_JSON))
   @Tag(name = "quotes")
   @Get("/jpa/ordered/asc")
-  public List<QuoteEntity> orderedAsc() {
+  public List<QuoteDTO> orderedAsc() {
     return quotesRepository.listOrderByVolumeAsc();
   }
 
