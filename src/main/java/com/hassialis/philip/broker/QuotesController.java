@@ -76,4 +76,20 @@ public class QuotesController {
 
   }
 
+  @Operation(summary = "Returns all quotes ordered by volume descending")
+  @ApiResponse(content = @Content(mediaType = MediaType.APPLICATION_JSON))
+  @Tag(name = "quotes")
+  @Get("/jpa/ordered/desc")
+  public List<QuoteEntity> orderedDesc() {
+    return quotesRepository.listOrderByVolumeDesc();
+  }
+
+  @Operation(summary = "Returns all quotes ordered by volume ascending")
+  @ApiResponse(content = @Content(mediaType = MediaType.APPLICATION_JSON))
+  @Tag(name = "quotes")
+  @Get("/jpa/ordered/asc")
+  public List<QuoteEntity> orderedAsc() {
+    return quotesRepository.listOrderByVolumeAsc();
+  }
+
 }
