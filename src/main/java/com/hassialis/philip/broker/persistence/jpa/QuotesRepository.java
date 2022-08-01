@@ -1,5 +1,6 @@
 package com.hassialis.philip.broker.persistence.jpa;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,4 +22,9 @@ public interface QuotesRepository extends CrudRepository<QuoteEntity, Integer> {
   List<QuoteDTO> listOrderByVolumeDesc();
 
   List<QuoteDTO> listOrderByVolumeAsc();
+
+  List<QuoteEntity> findByVolumeGreaterThan(BigDecimal volume);
+
+  List<QuoteEntity> findByVolumeGreaterThanOrderByVolumeDesc(BigDecimal volume);
+
 }

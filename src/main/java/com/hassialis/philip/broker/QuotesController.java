@@ -1,5 +1,6 @@
 package com.hassialis.philip.broker;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,6 +92,22 @@ public class QuotesController {
   @Get("/jpa/ordered/asc")
   public List<QuoteDTO> orderedAsc() {
     return quotesRepository.listOrderByVolumeAsc();
+  }
+
+  @Operation(summary = "Returns all quotes with volume higher than path variable")
+  @ApiResponse(content = @Content(mediaType = MediaType.APPLICATION_JSON))
+  @Tag(name = "quotes")
+  @Get("/jpa/volume/{volume}")
+  public List<QuoteEntity> volumeFilter(@PathVariable BigDecimal volume) {
+    return quotesRepository.findByVolumeGreaterThan(volume);
+  }
+
+  @Operation(summary = "Returns all quotes with volume higher than path variable ordered by volume descending")
+  @ApiResponse(content = @Content(mediaType = MediaType.APPLICATION_JSON))
+  @Tag(name = "quotes")
+  @Get("/jpa/volume/{volume}/ordered/desc")
+  public List<QuoteEntity> volumeFilterOrdered(@PathVariable BigDecimal volume) {
+    return quotesRepository.findByVolumeGreaterThanOrderByVolumeDesc(volume);
   }
 
 }
