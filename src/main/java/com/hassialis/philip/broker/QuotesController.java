@@ -12,12 +12,15 @@ import com.hassialis.philip.broker.persistence.model.QuoteEntity;
 import com.hassialis.philip.broker.persistence.model.SymbolEntity;
 import com.hassialis.philip.broker.data.InMemoryStore;
 
+import io.micronaut.data.annotation.Query;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
+import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.swagger.v3.oas.annotations.Operation;
@@ -94,12 +97,15 @@ public class QuotesController {
     return quotesRepository.listOrderByVolumeAsc();
   }
 
-  @Operation(summary = "Returns all quotes with volume higher than path variable")
+  @Operation(summary = "Returns all quotes with volume higher than path variable and pagination support")
   @ApiResponse(content = @Content(mediaType = MediaType.APPLICATION_JSON))
   @Tag(name = "quotes")
-  @Get("/jpa/volume/{volume}")
-  public List<QuoteEntity> volumeFilter(@PathVariable BigDecimal volume) {
-    return quotesRepository.findByVolumeGreaterThan(volume);
+  @Get("/jpa/pagination{?page,volume}")
+  public List<QuoteEntity> volumeFilterPagination(@QueryValue Optional<Integer> page,
+      @QueryValue Optional<BigDecimal> volume) {
+    int myPage = page.isEmpty() ? 0 : page.get();
+    BigDecimal myVolume = volume.isEmpty() ? BigDecimal.ZERO : volume.get();
+    return quotesRepository.findByVolumeGreaterThan(myVolume, Pageable.from(myPage, 2));
   }
 
   @Operation(summary = "Returns all quotes with volume higher than path variable ordered by volume descending")
@@ -108,6 +114,14 @@ public class QuotesController {
   @Get("/jpa/volume/{volume}/ordered/desc")
   public List<QuoteEntity> volumeFilterOrdered(@PathVariable BigDecimal volume) {
     return quotesRepository.findByVolumeGreaterThanOrderByVolumeDesc(volume);
+  }
+
+  @Operation(summary = "Returns all quotes with pagination support in path variable")
+  @ApiResponse(content = @Content(mediaType = MediaType.APPLICATION_JSON))
+  @Tag(name = "quotes")
+  @Get("/jpa/pagination/{page}")
+  List<QuoteEntity> allWithPagination(@PathVariable int page) {
+    return quotesRepository.listOrderBySymbol(Pageable.from(page, 5)).getContent();
   }
 
 }
